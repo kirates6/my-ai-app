@@ -88,8 +88,7 @@ export default async function Login({ searchParams }: LoginProps) {
       return redirect(`/login?message=${encodeURIComponent(errorMessage)}`);
     } else {
       // Fetch user data after successful sign-in using getUser function
-      const userData: any = await getUser();
-      const user = userData[0];
+      const user = (await getUser())?.[0];
 
       if (user) {
         const workStatus = user?.workStatus || "";

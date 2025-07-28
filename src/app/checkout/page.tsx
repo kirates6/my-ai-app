@@ -4,6 +4,7 @@ import Header from "@/components/Header";
 import { redirect } from "next/navigation";
 import pricingPlans from "./pricingPlans.json";
 import { useState } from 'react';
+import { handlePlanSelection } from '@/actions/billing';
 
 export default function CheckoutPage({
   searchParams,
@@ -222,11 +223,11 @@ export default function CheckoutPage({
                 </span>
               </div>
 
-              <a href={selectedPlan.stripeUrl} className="block w-full">
-                <button className="w-full bg-mainBlack text-mainWhite py-3 rounded-md font-medium hover:bg-mainBlack/90 transition-colors mb-4">
-                  Pay now
-                </button>
-              </a>
+              <form action={handlePlanSelection.bind(null, { name: selectedPlan.name, amount: selectedPlan.price })}>
+  <button type="submit" className="w-full bg-mainBlack text-mainWhite py-3 rounded-md font-medium hover:bg-mainBlack/90 transition-colors mb-4">
+    Confirm Purchase Request
+  </button>
+</form>
 
               <div className="relative group">
                 <p className="text-center text-sm text-mainBlack font-medium mb-2 cursor-help">
