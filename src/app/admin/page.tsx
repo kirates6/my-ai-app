@@ -21,6 +21,7 @@ async function getPaymentRequests() {
     .single();
 
   // If there's an error fetching the profile, or the role is not 'admin', redirect
+  console.log('--- ADMIN CHECK --- Profile received:', profile);
   if (profileError || profile?.role !== 'admin') {
     redirect('/'); 
   }
