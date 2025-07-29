@@ -7,16 +7,28 @@ import { updatePaymentStatus } from '@/actions/billing';
 // This function fetches the payment requests from your database
 async function getPaymentRequests() {
   const supabase = createServerComponentClient({ cookies });
-  
+
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    redirect('/');
+    redirect('/'); // Redirect if not logged in at all
   }
 
+  // NEW: Check for the 'admin' role in the user's profile
+  const { data: profile, error: profileError } = await supabase
+    .from('userTable')
+    .select('role')
+    .eq('id', user.id)
+    .single();
+
+  // If there's an error fetching the profile, or the role is not 'admin', redirect
+  if (profileError || profile?.role !== 'admin') {
+    redirect('/'); 
+  }
+
+  // This code now only runs if the user is a confirmed admin
   const { data, error } = await supabase
     .from('payments')
     .select('*, userTable(email)')
-    // Request #3: Orders the requests to show the newest first
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -25,7 +37,6 @@ async function getPaymentRequests() {
   }
   return { payments: data, error: null };
 }
-
 // This is the UI component for your admin page
 export default async function AdminPage() {
   const { payments, error } = await getPaymentRequests();

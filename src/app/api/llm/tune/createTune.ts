@@ -7,8 +7,11 @@ import { createClient } from "@/utils/supabase/server";
 const API_KEY = process.env.ASTRIA_API_KEY; // Use API key from .env.local
 const DOMAIN = 'https://api.astria.ai';
 
-// Define the domain for the callback URL
-const CALLBACK_DOMAIN = 'https://www.cvphoto.app';
+// Define the domain for the callback URL dynamically
+// This will use your Vercel URL in production or localhost for development
+const CALLBACK_DOMAIN = process.env.VERCEL_URL 
+  ? `https://${process.env.VERCEL_URL}` 
+  : 'http://localhost:3000';
 
 export async function createTune(userData: any) {
   const supabase = createClient(); // Create Supabase client for database operations

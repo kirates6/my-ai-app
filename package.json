@@ -30,6 +30,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-tweet": "^3.2.1",
+    "resend": "^4.7.0",
     "stripe": "^16.6.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
